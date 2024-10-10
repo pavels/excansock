@@ -1,5 +1,7 @@
 # Excansock
 
+[![Hex version](https://img.shields.io/hexpm/v/excansock.svg "Hex version")](https://hex.pm/packages/excansock)
+
 Excansock allows you to communicate using CAN bus through SocketCAN API. As SocketCAN is Linux specific, this project is useful only on Linux operating system.
 
 ## Example use

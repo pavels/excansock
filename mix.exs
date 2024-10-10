@@ -4,7 +4,7 @@ defmodule Excansock.MixProject do
   def project do
     [
       app: :excansock,
-      version: "1.0.0",
+      version: "1.0.1",
       elixir: "~> 1.9",
       compilers: [:elixir_make | Mix.compilers()],
       make_targets: ["all"],
@@ -13,7 +13,7 @@ defmodule Excansock.MixProject do
       package: package(),
       deps: deps(),
       name: "Excansock",
-      source_url: "https://github.com/pavels/excansoc"
+      source_url: "https://github.com/pavels/excansock"
     ]
   end
 
@@ -36,7 +36,7 @@ defmodule Excansock.MixProject do
     [
       files: ~w(lib c_src mix.exs mix.lock README.md LICENSE Makefile .formatter.exs),
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => "https://github.com/pavels/excansoc"}
+      links: %{"GitHub" => "https://github.com/pavels/excansock"}
     ]
   end
 end
