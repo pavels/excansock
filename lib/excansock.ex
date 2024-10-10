@@ -4,8 +4,6 @@ defmodule Excansock do
 
   import Excansock.CanConstants
 
-  require Logger
-
   defmodule State do
     defstruct [
       socket: -1,
@@ -81,7 +79,7 @@ defmodule Excansock do
   @doc """
   Send CAN message
   """
-  @spec send(GenServer.server(), CanFrame) :: :ok
+  @spec send(GenServer.server(), CanFrame.t) :: :ok
   def send(pid, frame) do
     GenServer.call(pid, {:send, frame})
   end

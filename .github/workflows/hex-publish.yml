@@ -1,0 +1,28 @@
+name: Publish to Hex
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: '1.16.2'
+        otp-version: '26.0'
+
+    - name: Install dependencies
+      run: mix deps.get
+
+    - name: Publish to Hex
+      env:
+        HEX_API_KEY: ${{ secrets.HEX_API_KEY }}  # Fetch the API key from GitHub Secrets
+      run: mix hex.publish --yes

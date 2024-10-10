@@ -6,12 +6,11 @@
 
 #include <string.h>
 
-#include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 
-#include <linux/if.h>
+#include <net/if.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
 
@@ -30,7 +29,7 @@ static ERL_NIF_TERM excansock_open_nif(ErlNifEnv* env, int argc, const ERL_NIF_T
   if (argc != 2 || 
       !enif_inspect_iolist_as_binary(env, argv[0], &dev_name) ||      
       !enif_get_int(env, argv[1], &canfd) ||
-      dev_name.size >= IFNAMSIZ)
+      dev_name.size >= IF_NAMESIZE)
       return enif_make_badarg(env);
 
   int socket_fd = 0;
@@ -40,7 +39,7 @@ static ERL_NIF_TERM excansock_open_nif(ErlNifEnv* env, int argc, const ERL_NIF_T
   if ((socket_fd = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
     return enif_make_tuple2(env, priv->atom_error, socket_fd);
 
-  char dev_name_str[IFNAMSIZ];
+  char dev_name_str[IF_NAMESIZE];
   memcpy(dev_name_str, (const char *)dev_name.data, dev_name.size);
   dev_name_str[dev_name.size] = '\0';
   dev_id = if_nametoindex(dev_name_str); 
@@ -91,16 +90,18 @@ static ERL_NIF_TERM excansock_open_nif(ErlNifEnv* env, int argc, const ERL_NIF_T
 static ERL_NIF_TERM excansock_close_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
   PrivData* priv = enif_priv_data(env);
   ResourceData *resource_data;
-  int r;
 
   if (argc != 1 || 
       !enif_get_resource(env, argv[0], excansock_rt, (void**)&resource_data) ||
       resource_data->socket < 0)
     return enif_make_badarg(env);
 
-  r = close(resource_data->socket);
-  if(r < 0)
-    return enif_make_tuple2(env, priv->atom_error, enif_make_int(env, r));
+  // if(close(resource_data->socket) < 0)
+  //   return enif_make_tuple2(env, priv->atom_error, enif_make_int(env, errno));
+
+  // int r = enif_select(env, resource_data->socket, ERL_NIF_SELECT_STOP, resource_data, NULL, priv->atom_undefined);
+  // if(r < 0)
+  //   return enif_make_tuple2(env, priv->atom_error, enif_make_int(env, r));
 
   resource_data->socket = -1;
   return priv->atom_ok;

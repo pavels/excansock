@@ -79,3 +79,5 @@ Than you can run:
 ```
 mix test
 ```
+
+For some tests you need real can bus and another device, which electively echoes received messages without reordering them. To run these tests, set `REAL_CAN_INTERFACE` environment variable to real interface name (such as `can0`) and run `mix test`.

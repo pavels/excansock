@@ -12,6 +12,7 @@ defmodule ExcansockTest do
     {:ok, pid} = Excansock.start_link()
     :ok = Excansock.open(pid, "vcan0")
     {:error, :ebound} = Excansock.open(pid, "vcan0")
+    :ok = Excansock.close(pid)
   end
 
   test "set_filters" do
@@ -23,6 +24,7 @@ defmodule ExcansockTest do
         can_mask: 0x700,
       }
     ])
+    :ok = Excansock.close(pid)
   end
 
   test "send and receive data" do
@@ -57,6 +59,7 @@ defmodule ExcansockTest do
       end
     end)
 
+    :ok = Excansock.close(pid)
   end
 
   test "send and receive real data - different id" do
@@ -101,6 +104,8 @@ defmodule ExcansockTest do
         5000 -> flunk("No message received")
       end
     end)
+
+    :ok = Excansock.close(pid)
   end
 
 end
