@@ -4,7 +4,7 @@ defmodule Excansock.MixProject do
   def project do
     [
       app: :excansock,
-      version: "1.0.2",
+      version: "1.0.3",
       elixir: "~> 1.9",
       compilers: [:elixir_make | Mix.compilers()],
       make_targets: ["all"],
