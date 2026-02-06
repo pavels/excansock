@@ -1,6 +1,6 @@
 defmodule Excansock do
   use GenServer
-  use Bitwise, only_operators: true
+  import Bitwise
 
   import Excansock.CanConstants
 
@@ -235,11 +235,11 @@ defmodule Excansock do
 
     cond do
       (can_frame.id &&& canERR_FLAG()) > 0 ->
-        Kernel.send(state.controlling_process, {:can_error_frame, %{ can_frame | id: can_frame.id &&& ~~~canERR_FLAG() }})
+        Kernel.send(state.controlling_process, {:can_error_frame, %{ can_frame | id: can_frame.id &&& bnot(canERR_FLAG()) }})
       (can_frame.id &&& canRTR_FLAG()) > 0 ->
-        Kernel.send(state.controlling_process, {:can_rtr_frame, %{ can_frame | id: can_frame.id &&& ~~~canRTR_FLAG() }})
+        Kernel.send(state.controlling_process, {:can_rtr_frame, %{ can_frame | id: can_frame.id &&& bnot(canRTR_FLAG()) }})
       (can_frame.id &&& canEFF_FLAG()) > 0 ->
-        Kernel.send(state.controlling_process, {:can_extended_frame, %{ can_frame | id: can_frame.id &&& ~~~canEFF_FLAG() }})
+        Kernel.send(state.controlling_process, {:can_extended_frame, %{ can_frame | id: can_frame.id &&& bnot(canEFF_FLAG()) }})
       true ->
         Kernel.send(state.controlling_process, {:can_data_frame, can_frame})
     end

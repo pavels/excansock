@@ -24,8 +24,8 @@ defmodule Excansock.MixProject do
 
   defp deps do
     [
-      {:elixir_make, "~> 0.6", runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:elixir_make, "~> 0.9", runtime: false},
+      {:ex_doc, "~> 0.40", only: :dev, runtime: false}
     ]
   end
 
